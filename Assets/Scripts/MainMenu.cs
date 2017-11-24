@@ -9,16 +9,16 @@ public class MainMenu : MonoBehaviour {
 	public Text scoreText;
 
 	public void Start() {
-		scoreText.text = "HighScore: " + PlayerPrefs.GetInt ("score").ToString();
+		scoreText.text = "HighScore: " + PlayerPrefs.GetInt("score").ToString();
 	}
 
 	public void ToGame()
 	{
-		SceneManager.LoadScene ("Game");
+		SceneManager.LoadScene("Game");
 	}
 
 	public void ToQuit()
 	{
-		Application.Quit ();
+		Application.Quit();
 	}
 }

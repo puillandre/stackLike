@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class RemoveRubble : MonoBehaviour {
 
-	private void OnCollisionEnter (Collision col) {
-		Destroy (col.gameObject);
+    public TheStack theStack;
+
+  
+    private void OnTriggerEnter (Collider col) {
+        Destroy (col.gameObject);
 	}
 }
