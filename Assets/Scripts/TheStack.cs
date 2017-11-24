@@ -9,6 +9,7 @@ public class TheStack : MonoBehaviour
     public Text scoreText;
     public GameObject endPanel;
     public GameObject prefab;
+    public ParticleSystem particle;
     public int nbBoxes;
     private const float BOUND_SIZE = 3.5f;
     private const float STACK_MOVING_SPEED = 1.0f;
@@ -193,6 +194,7 @@ public class TheStack : MonoBehaviour
 
     public void OnButtonClick(string sceneName)
     {
+        particle.Stop();
         SceneManager.LoadScene(sceneName);
     }
 }

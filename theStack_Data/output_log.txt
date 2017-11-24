@@ -1,23 +1,42 @@
 Initialize engine version: 5.6.3p2 (b3d7a6428558)
 GfxDevice: creating device client; threaded=1
 Direct3D:
-    Version:  Direct3D 11.0 [level 11.1]
-    Renderer: Intel(R) HD Graphics 5500 (ID=0x1616)
-    Vendor:   Intel
-    VRAM:     2111 MB
-    Driver:   20.19.15.4531
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 770 (ID=0x1184)
+    Vendor:   NVIDIA
+    VRAM:     3072 MB
+    Driver:   23.21.13.8813
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-- Completed reload, in  0.074 seconds
-Platform assembly: C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Users\Edouard\Documents\Coding Club\stack\StackClub\theStack_Data\Managed\System.dll (this message is harmless)
-desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+Platform assembly: C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+- Completed reload, in  0.018 seconds
+Platform assembly: C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\eldh\Documents\stackLikeCamp\theStack_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 3600x1080 at -1680,0
 <RI> Initializing input.
 <RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 0.992392 ms
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 1b90 -> priority: 1 
+  Thread -> id: 1d10 -> priority: 1 
+  Thread -> id: 4230 -> priority: 1 
+  Thread -> id: 1868 -> priority: 1 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 4.189126 ms
+
+Unloading 49 unused Assets to reduce memory usage. Loaded Objects now: 304.
+Total: 0.408081 ms (FindLiveObjects: 0.036885 ms CreateObjectMapping: 0.013758 ms MarkObjects: 0.166862 ms  DeleteObjects: 0.190281 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.839874 ms
+
+Unloading 30 unused Assets to reduce memory usage. Loaded Objects now: 898.
+Total: 0.250879 ms (FindLiveObjects: 0.044789 ms CreateObjectMapping: 0.032494 ms MarkObjects: 0.139930 ms  DeleteObjects: 0.033079 ms)
+
