@@ -46,7 +46,6 @@ public class TheStack : MonoBehaviour
         SpawnBoxes();
     }
 
-
     private void SpawnBoxes()
     {
         theStack = new GameObject[nbBoxes];
@@ -62,6 +61,7 @@ public class TheStack : MonoBehaviour
         GameObject go = Instantiate(prefab, pos, Quaternion.identity, transform); // GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.transform.localScale = scale;
         go.AddComponent<Rigidbody>();
+		go.GetComponentInChildren<RandomMaterial> ().SetMaterial (theStack [0].GetComponent<Material> ());
     }
 
     // Update is called once per frame
@@ -109,76 +109,91 @@ public class TheStack : MonoBehaviour
         theStack[stackIndex].transform.localScale = new Vector3(stackBounds.x, 1, stackBounds.y);
     }
 
+	private void PlaceCombo(Transform t)
+	{
+		++combo;
+		if (combo > COMBO_BOUNDS_GAIN)
+		{
+			if (stackBounds.x < BOUND_SIZE)
+				stackBounds.x += STACK_BOUNDS_GAIN;
+			if (stackBounds.y < BOUND_SIZE)
+				stackBounds.y += STACK_BOUNDS_GAIN;
+		}
+		t.localPosition = new Vector3(lastTilePosition.x, scoreCount, lastTilePosition.z);
+	}
+
+	private bool PlaceOnX(Transform t)
+	{
+		float deltaX = lastTilePosition.x - t.transform.position.x;
+		if (Mathf.Abs(deltaX) > ERROR_MARGIN)
+		{
+			//CUT TILE
+			combo = 0;
+			stackBounds.x -= Mathf.Abs(deltaX);
+			if (stackBounds.x <= 0)
+				return false;
+
+			float middle = (lastTilePosition.x + t.localPosition.x) / 2;
+			t.localScale = new Vector3(stackBounds.x, 1, stackBounds.y);
+			CreateRubble(
+				new Vector3(t.position.x > 0 ? t.position.x + t.localScale.x / 2 : t.position.x - t.localScale.x / 2, t.position.y, t.position.z),
+				new Vector3(Mathf.Abs(deltaX), 1, t.localScale.z)
+			);
+			t.localPosition = new Vector3(middle, scoreCount, lastTilePosition.z);
+		}
+		else
+		{
+			PlaceCombo (t);
+		}
+		return (true);
+	}
+
+	private bool PlaceOnY(Transform t)
+	{
+		float deltaZ = lastTilePosition.z - t.transform.position.z;
+		if (Mathf.Abs(deltaZ) > ERROR_MARGIN)
+		{
+			//CUT TILE
+			combo = 0;
+			stackBounds.y -= Mathf.Abs(deltaZ);
+			if (stackBounds.y <= 0)
+				return false;
+
+			float middle = (lastTilePosition.z + t.localPosition.z) / 2;
+			t.localScale = new Vector3(stackBounds.x, 1, stackBounds.y);
+			CreateRubble(
+				new Vector3(t.position.x, t.position.y, t.position.z > 0 ? t.position.z + t.localScale.z / 2 : t.position.z - t.localScale.z / 2),
+				new Vector3(t.localScale.x, 1, Mathf.Abs(deltaZ))
+			);
+			t.localPosition = new Vector3(lastTilePosition.x, scoreCount, middle);
+		}
+		else
+		{
+			PlaceCombo (t);
+		}
+		return (true);
+	}
+
     private bool PlaceTile()
     {
         Transform t = theStack[stackIndex].transform;
 
-        if (isMovingOnX)
+		if (isMovingOnX)
         {
-            float deltaX = lastTilePosition.x - t.transform.position.x;
-            if (Mathf.Abs(deltaX) > ERROR_MARGIN)
-            {
-                //CUT TILE
-                combo = 0;
-                stackBounds.x -= Mathf.Abs(deltaX);
-                if (stackBounds.x <= 0)
-                    return false;
-
-                float middle = (lastTilePosition.x + t.localPosition.x) / 2;
-                t.localScale = new Vector3(stackBounds.x, 1, stackBounds.y);
-                CreateRubble(
-                    new Vector3(t.position.x > 0 ? t.position.x + t.localScale.x / 2 : t.position.x - t.localScale.x / 2, t.position.y, t.position.z),
-                    new Vector3(Mathf.Abs(deltaX), 1, t.localScale.z)
-                );
-                t.localPosition = new Vector3(middle, scoreCount, lastTilePosition.z);
-            }
-            else
-            {
-                ++combo;
-                if (combo > COMBO_BOUNDS_GAIN)
-                {
-                    if (stackBounds.x < BOUND_SIZE)
-                        stackBounds.x += STACK_BOUNDS_GAIN;
-                }
-                t.localPosition = new Vector3(lastTilePosition.x, scoreCount, lastTilePosition.z);
-            }
+			if (PlaceOnX (t) == false)
+			{
+				return (false);
+			}
+			secondaryPosition = t.localPosition.x;
+			isMovingOnX = false;
         }
         else
         {
-            float deltaZ = lastTilePosition.z - t.transform.position.z;
-            if (Mathf.Abs(deltaZ) > ERROR_MARGIN)
-            {
-                //CUT TILE
-                combo = 0;
-                stackBounds.y -= Mathf.Abs(deltaZ);
-                if (stackBounds.y <= 0)
-                    return false;
-
-                float middle = (lastTilePosition.z + t.localPosition.z) / 2;
-                t.localScale = new Vector3(stackBounds.x, 1, stackBounds.y);
-                CreateRubble(
-                    new Vector3(t.position.x, t.position.y, t.position.z > 0 ? t.position.z + t.localScale.z / 2 : t.position.z - t.localScale.z / 2),
-                    new Vector3(t.localScale.x, 1, Mathf.Abs(deltaZ))
-                );
-                t.localPosition = new Vector3(lastTilePosition.x, scoreCount, middle);
-            }
-            else
-            {
-                ++combo;
-                if (combo >= COMBO_BOUNDS_GAIN)
-                {
-                    if (stackBounds.y < BOUND_SIZE)
-                        stackBounds.y += STACK_BOUNDS_GAIN;
-                }
-                t.localPosition = new Vector3(lastTilePosition.x, scoreCount, lastTilePosition.z);
-            }
+			if (PlaceOnY (t) == false)
+				return (false);
+			secondaryPosition = t.localPosition.z;
+			isMovingOnX = true;
         }
-
-        if (isMovingOnX)
-            secondaryPosition = t.localPosition.x;
-        else
-            secondaryPosition = t.localPosition.z;
-        isMovingOnX = !isMovingOnX;
         return (true);
     }
 

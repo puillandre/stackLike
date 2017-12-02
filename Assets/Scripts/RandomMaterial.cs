@@ -15,4 +15,9 @@ public class RandomMaterial : MonoBehaviour {
         int r = Random.Range(0, materials.Length);
         GetComponent<Renderer>().material = materials[r];
     }
+
+	public void SetMaterial(Material mat)
+	{
+		this.GetComponent<Renderer> ().material = mat;
+	}
 }
