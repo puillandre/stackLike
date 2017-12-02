@@ -61,7 +61,7 @@ public class TheStack : MonoBehaviour
         GameObject go = Instantiate(prefab, pos, Quaternion.identity, transform); // GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.transform.localScale = scale;
         go.AddComponent<Rigidbody>();
-		go.GetComponentInChildren<RandomMaterial> ().SetMaterial (theStack [0].GetComponent<Material> ());
+		go.GetComponentInChildren<RandomMaterial>().SetMaterialID(theStack[stackIndex].GetComponentInChildren<RandomMaterial>().getMaterialID());
     }
 
     // Update is called once per frame
