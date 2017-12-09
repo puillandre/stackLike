@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,23 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class TheStack : MonoBehaviour
 {
-    public Text scoreText;
-    public GameObject endPanel;
-    public GameObject prefab;
-    public ParticleSystem particle;
-    public int nbBoxes;
-    private const float BOUND_SIZE = 3.5f;
-    private const float STACK_MOVING_SPEED = 1.0f;
-    private const float ERROR_MARGIN = 0.1f;
-    private const float STACK_BOUNDS_GAIN = 0.25f;
-    private const int COMBO_BOUNDS_GAIN = 3;
+    /* Déclarez la variable publique scoreText type Text */
 
-    private GameObject[] theStack;
-    private Vector2 stackBounds = new Vector2(BOUND_SIZE, BOUND_SIZE);
+    /* Déclarez la variable publique endPanel de type GameObject*/
 
-    private int scoreCount = 0;
-    private int stackIndex = 0;
-    private int combo = 0;
+    /* Déclarez une variable publique prefab de type GameObject*/
+
+    /* Déclarez la variable publique particle de type ParticleSystem */
+
+    /* Déclarez la variable publique nbBoxes de type int*/
+    
+    
+    /* Déclarez une chaine privée theStack de type GameObject */
+
+
+    /* Déclarez la variable privée scoreCount de type int et initialisez la a 0 */
+
+    /* Déclarez la variable privée stackIndex de type int et initialisez la a 0 */
+
+    /* Déclarez la variable privée combo de type int et initialisez la a 0 */
+
+    /* Déclarez la variable privée isMovingOnX de type booléen */
 
     private float tileTransition = 0.0f;
     private float tileSpeed = 2.5f;
@@ -34,18 +38,26 @@ public class TheStack : MonoBehaviour
     private bool isMovingOnX = true;
     private bool gameOver = false;
 
+    private Vector2 stackBounds = new Vector2(BOUND_SIZE, BOUND_SIZE);
+    private const float BOUND_SIZE = 3.5f;
+    private const float STACK_MOVING_SPEED = 1.0f;
+    private const float ERROR_MARGIN = 0.1f;
+    private const float STACK_BOUNDS_GAIN = 0.25f;
+    private const int COMBO_BOUNDS_GAIN = 3;
+
     public int StackIndex
     {
         get { return stackIndex; }
         set { stackIndex = value; }
     }
 
-    // Use this for initialization
+    // Start est la fonction appelé au lancement du jeu
     private void Start()
     {
         SpawnBoxes();
     }
 
+    /* SpawnBoxes  */
     private void SpawnBoxes()
     {
         theStack = new GameObject[nbBoxes];
@@ -56,6 +68,7 @@ public class TheStack : MonoBehaviour
         stackIndex = nbBoxes - 1;
     }
 
+
     private void CreateRubble(Vector3 pos, Vector3 scale)
     {
         GameObject go = Instantiate(prefab, pos, Quaternion.identity, transform); // GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -64,27 +77,26 @@ public class TheStack : MonoBehaviour
 		go.GetComponentInChildren<RandomMaterial>().SetMaterialID(theStack[stackIndex].GetComponentInChildren<RandomMaterial>().getMaterialID());
     }
 
-    // Update is called once per frame
+    // Update est la fonction appelé à chaque frame par le jeux essayez de coder cette fonction !
     void Update()
     {
-        if (gameOver)
-            return;
-        if (Input.GetButtonUp("Fire1"))
+        /* D'abord on check si le jeu est terminé, si oui on arete */
+        
+        /* ensuite one regarde si le joueur clique ou appuie sur la barre espace (indice = Input....("Fire1")) */
         {
-            if (PlaceTile())
-            {
-                SpawnTile();
-                ++scoreCount;
-                scoreText.text = scoreCount.ToString();
-            }
-            else
-            {
-                EndGame();
-            }
-        }
-        MoveTile();
+            /* si le joueur a placé la pièce correctement */
+            
+                /* On fait aparaitre une nouvelle pièce */
+               
+                /* On augmente le score */
+                
+                /* on affiche le score */
+        }   
+         /* autrement le jeux est terminé */
+            
+        /* je peut maintenant bouger la pièce */
 
-        //Move the stack
+        //je bouge la stack
         transform.position = Vector3.Lerp(transform.position, desiredPosition, STACK_MOVING_SPEED * Time.deltaTime);
     }
 
@@ -109,15 +121,20 @@ public class TheStack : MonoBehaviour
         theStack[stackIndex].transform.localScale = new Vector3(stackBounds.x, 1, stackBounds.y);
     }
 
-	private void PlaceCombo(Transform t)
+  /* addCombo est appelé lorsque le jeu a detecté une pièce placé parfaitement */
+	private void addCombo(Transform t)
 	{
-		++combo;
-		if (combo > COMBO_BOUNDS_GAIN)
+        /* on augmente le combo */
+		
+        /* si le combo est plus grand que la limite définie par COMBO_BOUNDS_GAIN */
 		{
-			if (stackBounds.x < BOUND_SIZE)
-				stackBounds.x += STACK_BOUNDS_GAIN;
-			if (stackBounds.y < BOUND_SIZE)
-				stackBounds.y += STACK_BOUNDS_GAIN;
+            /* On vérifie si la pièce actuelle n'est pas plus grande que la pièce de départ en x */
+
+            /* On augmente la taille de la pièce en x par le coefficient défini par STACK_BOUNDS_GAIN */
+
+            /* On vérifie si la pièce actuelle n'est pas plus grande que la pièce de départ en x */
+
+            /* On augmente la taille de la pièce en y par le coefficient défini par STACK_BOUNDS_GAIN */
 		}
 		t.localPosition = new Vector3(lastTilePosition.x, scoreCount, lastTilePosition.z);
 	}
@@ -143,7 +160,7 @@ public class TheStack : MonoBehaviour
 		}
 		else
 		{
-			PlaceCombo (t);
+			addCombo (t);
 		}
 		return (true);
 	}
@@ -169,42 +186,51 @@ public class TheStack : MonoBehaviour
 		}
 		else
 		{
-			PlaceCombo (t);
+			addCombo(t);
 		}
 		return (true);
 	}
 
+
+    /* PlaceTile est appelé lorsque le joueur clique pour poser la pièce */
     private bool PlaceTile()
     {
+        /* On défini la position de la nouvelle piece dans une variable t */
         Transform t = theStack[stackIndex].transform;
+    /* si la pièce bouge sur l'axe x */
+        {
+            /* On essaye de poser la pièce via l'axe x si l'on ne peut pas on arete la fonction */
+			
 
-		if (isMovingOnX)
-        {
-			if (PlaceOnX (t) == false)
-			{
-				return (false);
-			}
-			secondaryPosition = t.localPosition.x;
-			isMovingOnX = false;
+            /* On bouge à la nouvelle position */
+
+            /* On indique qu'on arete de bouger sur X */
+
         }
-        else
+        /* Sinon */
         {
-			if (PlaceOnY (t) == false)
-				return (false);
-			secondaryPosition = t.localPosition.z;
-			isMovingOnX = true;
+            /* On essaye de poser la pièce via l'axe y si l'on ne peut pas on arete la fonction */
+		
+             /* On bouge à la nouvelle position */
+
+            /* On indique qu'on arete de bouger sur X */
+
         }
-        return (true);
+        /* si on arrive ici la fonction c'est qu'on as pas rencontré de problème  */
     }
 
+    /* La fonction EndGame est la fonction appelé pour la fin du jeu */
     private void EndGame()
-    {
-        if (scoreCount > PlayerPrefs.GetInt("score"))
-            PlayerPrefs.SetInt("score", scoreCount);
-        if (!gameOver)
-            theStack[stackIndex].AddComponent<Rigidbody>();
-        endPanel.SetActive(true);
-        gameOver = true;
+    { 
+        /* Si le score est plus grand que le highScore indice: PlayerPrefs...("score") */
+        {
+            /* On enregistre le nouveau score dans le highscore */
+
+            /* On permet a la dernière pièce de tomber indice : theStack[stackIndex]... */
+
+            /* On affiche l'écran de fin indice endPanel... */
+        }
+        /* Gameover */
     }
 
     public void OnButtonClick(string sceneName)
