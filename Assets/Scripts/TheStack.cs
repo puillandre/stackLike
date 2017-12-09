@@ -20,11 +20,11 @@ public class TheStack : MonoBehaviour
     /* Déclarez une chaine privée theStack de type GameObject */
 
 
-    /* Déclarez la variable privée scoreCount de type int et initialisez la a 0 */
+    /* Déclarez la variable privée scoreCount de type int et initialisez la à 0 */
 
-    /* Déclarez la variable privée stackIndex de type int et initialisez la a 0 */
+    /* Déclarez la variable privée stackIndex de type int et initialisez la à 0 */
 
-    /* Déclarez la variable privée combo de type int et initialisez la a 0 */
+    /* Déclarez la variable privée combo de type int et initialisez la à 0 */
 
     /* Déclarez la variable privée isMovingOnX de type booléen */
 
@@ -51,13 +51,13 @@ public class TheStack : MonoBehaviour
         set { stackIndex = value; }
     }
 
-    // Start est la fonction appelé au lancement du jeu
+    // Start est la fonction appelée au lancement du jeu
     private void Start()
     {
         SpawnBoxes();
     }
 
-    /* SpawnBoxes  */
+    /* Permet la création des pièces au démarrage */
     private void SpawnBoxes()
     {
         theStack = new GameObject[nbBoxes];
@@ -68,38 +68,35 @@ public class TheStack : MonoBehaviour
         stackIndex = nbBoxes - 1;
     }
 
-
-    private void CreateRubble(Vector3 pos, Vector3 scale)
-    {
-        GameObject go = Instantiate(prefab, pos, Quaternion.identity, transform); // GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.transform.localScale = scale;
-        go.AddComponent<Rigidbody>();
-		go.GetComponentInChildren<RandomMaterial>().SetMaterialID(theStack[stackIndex].GetComponentInChildren<RandomMaterial>().getMaterialID());
-    }
-
-    // Update est la fonction appelé à chaque frame par le jeux essayez de coder cette fonction !
+    // Update est la fonction appelée à chaque frame par le jeux. Essayez de coder cette fonction !
     void Update()
     {
-        /* D'abord on check si le jeu est terminé, si oui on arete */
-        
-        /* ensuite one regarde si le joueur clique ou appuie sur la barre espace (indice = Input....("Fire1")) */
+        /* D'abord, on vérifie si le jeu est terminé, */
         {
-            /* si le joueur a placé la pièce correctement */
-            
-                /* On fait aparaitre une nouvelle pièce */
-               
-                /* On augmente le score */
-                
-                /* on affiche le score */
-        }   
-         /* autrement le jeux est terminé */
-            
-        /* je peut maintenant bouger la pièce */
+            /* si oui, on arrête */
+        }
 
-        //je bouge la stack
-        transform.position = Vector3.Lerp(transform.position, desiredPosition, STACK_MOVING_SPEED * Time.deltaTime);
+        /* ensuite on regarde si le joueur clique ou appuie sur la barre espace (indice = Input....("Fire1")) */
+        {
+            /* Si le joueur a placé la pièce correctement */
+            {
+                /* On fait apparaitre une nouvelle pièce */
+
+                /* On augmente le score */
+
+                /* On affiche le score */
+            }
+            /* Sinon */
+            {
+                /* On termine le jeux et on quitte la fonction*/
+            }
+        }            
+        /* Je peux maintenant bouger la pièce */
+
+        transform.position = Vector3.Lerp(transform.position, desiredPosition, STACK_MOVING_SPEED * Time.deltaTime); /* Je bouge la stack*/
     }
 
+    /* Fonction permettant le mouvement de la pièce */
     private void MoveTile()
     {
         tileTransition += Time.deltaTime * tileSpeed;
@@ -109,6 +106,7 @@ public class TheStack : MonoBehaviour
             theStack[stackIndex].transform.localPosition = new Vector3(secondaryPosition, scoreCount, Mathf.Sin(tileTransition) * BOUND_SIZE);
     }
 
+    /* Fonction permettant de créer une pièce */
     private void SpawnTile()
     {
         lastTilePosition = theStack[stackIndex].transform.localPosition;
@@ -121,30 +119,40 @@ public class TheStack : MonoBehaviour
         theStack[stackIndex].transform.localScale = new Vector3(stackBounds.x, 1, stackBounds.y);
     }
 
-  /* addCombo est appelé lorsque le jeu a detecté une pièce placé parfaitement */
+  /* La fonction addCombo est appelée lorsque le jeu a detecté une pièce placée parfaitement */
 	private void addCombo(Transform t)
 	{
-        /* on augmente le combo */
+        /* On augmente la variable combo */
 		
         /* si le combo est plus grand que la limite définie par COMBO_BOUNDS_GAIN */
 		{
             /* On vérifie si la pièce actuelle n'est pas plus grande que la pièce de départ en x */
-
-            /* On augmente la taille de la pièce en x par le coefficient défini par STACK_BOUNDS_GAIN */
-
-            /* On vérifie si la pièce actuelle n'est pas plus grande que la pièce de départ en x */
-
-            /* On augmente la taille de la pièce en y par le coefficient défini par STACK_BOUNDS_GAIN */
+            {
+                /* On augmente la taille de la pièce en x par le coefficient défini par STACK_BOUNDS_GAIN */
+            }
+            /* On vérifie si la pièce actuelle n'est pas plus grande que la pièce de départ en y */
+            {
+                /* On augmente la taille de la pièce en y par le coefficient défini par STACK_BOUNDS_GAIN */
+            }
 		}
 		t.localPosition = new Vector3(lastTilePosition.x, scoreCount, lastTilePosition.z);
 	}
 
-	private bool PlaceOnX(Transform t)
+    /* Permet de créer les débris lors du découpage */
+    private void CreateRubble(Vector3 pos, Vector3 scale)
+    {
+        GameObject go = Instantiate(prefab, pos, Quaternion.identity, transform);
+        go.transform.localScale = scale;
+        go.AddComponent<Rigidbody>();
+        go.GetComponentInChildren<RandomMaterial>().SetMaterialID(theStack[stackIndex].GetComponentInChildren<RandomMaterial>().getMaterialID());
+    }
+
+    /* Fonction permettant de placer la pièce et de la découper lorsqu'elle se déplace selon x*/
+    private bool PlaceOnX(Transform t)
 	{
 		float deltaX = lastTilePosition.x - t.transform.position.x;
 		if (Mathf.Abs(deltaX) > ERROR_MARGIN)
 		{
-			//CUT TILE
 			combo = 0;
 			stackBounds.x -= Mathf.Abs(deltaX);
 			if (stackBounds.x <= 0)
@@ -165,13 +173,13 @@ public class TheStack : MonoBehaviour
 		return (true);
 	}
 
-	private bool PlaceOnY(Transform t)
+    /* Fonction permettant de placer la pièce et de la découper lorsqu'elle se déplace selon y*/
+    private bool PlaceOnY(Transform t)
 	{
 		float deltaZ = lastTilePosition.z - t.transform.position.z;
 		if (Mathf.Abs(deltaZ) > ERROR_MARGIN)
 		{
-			//CUT TILE
-			combo = 0;
+            combo = 0;
 			stackBounds.y -= Mathf.Abs(deltaZ);
 			if (stackBounds.y <= 0)
 				return false;
@@ -192,15 +200,17 @@ public class TheStack : MonoBehaviour
 	}
 
 
-    /* PlaceTile est appelé lorsque le joueur clique pour poser la pièce */
+    /* PlaceTile est appelée lorsque le joueur clique pour poser la pièce */
     private bool PlaceTile()
     {
         /* On défini la position de la nouvelle piece dans une variable t */
         Transform t = theStack[stackIndex].transform;
-    /* si la pièce bouge sur l'axe x */
+        /* si la pièce bouge sur l'axe x */
         {
-            /* On essaye de poser la pièce via l'axe x si l'on ne peut pas on arete la fonction */
-			
+            /* On essaye de poser la pièce via l'axe x (indice, appel de fonction), */
+            {
+                /* s'il y a une erreur, on arrête la fonction en renvoyant une erreur */
+            }
 
             /* On bouge à la nouvelle position */
 
@@ -209,9 +219,12 @@ public class TheStack : MonoBehaviour
         }
         /* Sinon */
         {
-            /* On essaye de poser la pièce via l'axe y si l'on ne peut pas on arete la fonction */
+            /* On essaye de poser la pièce via l'axe y */
+            {
+                /* s'il y a une erreur, on arrête la fonction en renvoyant une erreur */
+            }
 		
-             /* On bouge à la nouvelle position */
+            /* On bouge à la nouvelle position */
 
             /* On indique qu'on arete de bouger sur X */
 
@@ -219,20 +232,20 @@ public class TheStack : MonoBehaviour
         /* si on arrive ici la fonction c'est qu'on as pas rencontré de problème  */
     }
 
-    /* La fonction EndGame est la fonction appelé pour la fin du jeu */
+    /* La fonction EndGame est la fonction appelée pour la fin du jeu */
     private void EndGame()
-    { 
+    {
         /* Si le score est plus grand que le highScore indice: PlayerPrefs...("score") */
         {
             /* On enregistre le nouveau score dans le highscore */
-
-            /* On permet a la dernière pièce de tomber indice : theStack[stackIndex]... */
-
-            /* On affiche l'écran de fin indice endPanel... */
         }
-        /* Gameover */
+        /* On permet a la dernière pièce de tomber indice : theStack[stackIndex]... */
+
+        /* On affiche l'écran de fin indice endPanel... */
+        /* On indique qu'il y a GameOver sur le reste du jeu */
     }
 
+    /* La fonction permet de gérer le changement de scéne sur Unity */
     public void OnButtonClick(string sceneName)
     {
         particle.Stop();
